@@ -1,6 +1,11 @@
 {
   "repositoryName": "test-cloudflare-pages-nextjs",
-  "adapter": "@slicemachine/adapter-next",
+  "adapter": {
+    "resolve": "@slicemachine/adapter-next",
+    "options": {
+      "typescript": true
+    }
+  },
   "libraries": ["./src/slices"],
   "localSliceSimulatorURL": "http://localhost:3000/slice-simulator",
   "apiEndpoint": ""
