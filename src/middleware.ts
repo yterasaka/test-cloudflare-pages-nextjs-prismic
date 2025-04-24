@@ -1,5 +1,3 @@
-// ./src/middleware.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/prismicio";
 
