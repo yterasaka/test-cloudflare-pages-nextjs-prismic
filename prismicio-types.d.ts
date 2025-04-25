@@ -4,7 +4,7 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type PageDocumentDataSlicesSlice = RichTextSlice;
+type PageDocumentDataSlicesSlice = HeroSlice | RichTextSlice;
 
 /**
  * Content for Page documents
@@ -76,7 +76,150 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-export type AllDocumentTypes = PageDocument;
+/**
+ * Content for testbtn documents
+ */
+interface TestbtnDocumentData {
+  /**
+   * test relation field in *testbtn*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testbtn.test_relation
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  test_relation: prismic.ContentRelationshipField;
+
+  /**
+   * bool field in *testbtn*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: testbtn.bool
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  bool: prismic.BooleanField;
+}
+
+/**
+ * testbtn document from Prismic
+ *
+ * - **API ID**: `testbtn`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TestbtnDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<TestbtnDocumentData>,
+    "testbtn",
+    Lang
+  >;
+
+export type AllDocumentTypes = PageDocument | TestbtnDocument;
+
+/**
+ * Item in *Hero → Default → Primary → Page builder*
+ */
+export interface HeroSliceDefaultPrimaryPageBuilderItem {
+  /**
+   * reuse text field in *Hero → Default → Primary → Page builder*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.page_builder[].reuse_text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  reuse_text: prismic.RichTextField;
+
+  /**
+   * reuse image field in *Hero → Default → Primary → Page builder*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.page_builder[].reuse_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  reuse_image: prismic.ImageField<never>;
+}
+
+/**
+ * Primary content in *Hero → Default → Primary*
+ */
+export interface HeroSliceDefaultPrimary {
+  /**
+   * Hero Image field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.hero_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  hero_image: prismic.ImageField<never>;
+
+  /**
+   * Hero Headline field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.hero_headline
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  hero_headline: prismic.KeyTextField;
+
+  /**
+   * Hero Text field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.hero_text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  hero_text: prismic.RichTextField;
+
+  /**
+   * Page builder field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.page_builder[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  page_builder: prismic.GroupField<
+    Simplify<HeroSliceDefaultPrimaryPageBuilderItem>
+  >;
+}
+
+/**
+ * Default variation for Hero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<HeroSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Hero*
+ */
+type HeroSliceVariation = HeroSliceDefault;
+
+/**
+ * Hero Shared Slice
+ *
+ * - **API ID**: `hero`
+ * - **Description**: Hero
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
  * Primary content in *RichText → Default → Primary*
@@ -157,7 +300,14 @@ declare module "@prismicio/client" {
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
+      TestbtnDocument,
+      TestbtnDocumentData,
       AllDocumentTypes,
+      HeroSlice,
+      HeroSliceDefaultPrimaryPageBuilderItem,
+      HeroSliceDefaultPrimary,
+      HeroSliceVariation,
+      HeroSliceDefault,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
