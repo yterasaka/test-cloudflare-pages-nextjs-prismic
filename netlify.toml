@@ -1,2 +1,13 @@
+[build]
+  publish   = "out"                 # Next.js の静的出力先 (必要に応じて調整)
+  functions = ".netlify/functions"  # ← ここを必ず .netlify/functions に
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# API Route を Netlify Function にマッピング
+[[redirects]]
+  from = "/api/*"
+  to   = "/.netlify/functions/app/api/:splat"
+  status = 200
+  force = true
