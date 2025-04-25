@@ -8,6 +8,7 @@
     "dev": "concurrently \"npm:next:dev\" \"npm:slicemachine\" --names \"next,slicemachine\" --prefix-colors blue,magenta",
     "next:dev": "next dev --turbopack",
     "build": "next build",
+    "postbuild": "next-on-netlify",
     "start": "next start",
     "lint": "next lint",
     "slicemachine": "start-slicemachine",
@@ -18,6 +19,7 @@
     "@prismicio/next": "^2.0.1",
     "@prismicio/react": "^3.2.1",
     "next": "^15.1.6",
+    "next-on-netlify": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
