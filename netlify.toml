@@ -1,2 +1,15 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from = "/api/preview"
+  to = "/api/preview"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/exit-preview"
+  to = "/api/exit-preview"
+  status = 200
+  force = true
+
