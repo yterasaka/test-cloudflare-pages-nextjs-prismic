@@ -7,7 +7,6 @@ export async function middleware(request: NextRequest) {
   const locales = repository.languages.map((lang) => lang.id);
   const defaultLocale = locales[0];
 
-  // プレビューAPIのパスはリダイレクトせずにそのまま処理する
   const { pathname } = request.nextUrl;
   if (
     pathname.startsWith("/api/preview") ||
@@ -16,12 +15,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // ロケールチェック
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
 
-  // Redirect to default locale if there is no supported locale prefix
   if (pathnameIsMissingLocale) {
     return NextResponse.rewrite(
       new URL(`/${defaultLocale}${pathname}`, request.url)
@@ -32,6 +29,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // プレビューAPIやNext.jsのアセットパスを除外する
   matcher: ["/((?!_next|favicon.ico|api/preview|api/exit-preview).*)"],
 };
