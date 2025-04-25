@@ -4,13 +4,19 @@ import { createClient } from "@/prismicio";
 export async function middleware(request: NextRequest) {
   const client = createClient();
   const repository = await client.getRepository();
-
   const locales = repository.languages.map((lang) => lang.id);
   const defaultLocale = locales[0];
 
-  // Check if there is any supported locale in the pathname
+  // プレビューAPIのパスはリダイレクトせずにそのまま処理する
   const { pathname } = request.nextUrl;
+  if (
+    pathname.startsWith("/api/preview") ||
+    pathname.startsWith("/api/exit-preview")
+  ) {
+    return NextResponse.next();
+  }
 
+  // ロケールチェック
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -21,9 +27,11 @@ export async function middleware(request: NextRequest) {
       new URL(`/${defaultLocale}${pathname}`, request.url)
     );
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  // Don’t change the URL of Next.js assets starting with _next
-  matcher: ["/((?!_next).*)"],
+  // プレビューAPIやNext.jsのアセットパスを除外する
+  matcher: ["/((?!_next|favicon.ico|api/preview|api/exit-preview).*)"],
 };
