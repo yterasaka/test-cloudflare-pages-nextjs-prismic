@@ -1,4 +1,4 @@
-# Prismic + Next.js Minimal Starter for Preview test
+# Prismic + Next.js Minimal Starter for Preview test again
 
 Want to quickly get started building your own project with [Prismic][prismic] and [Next.js][nextjs]? This project includes basic configurations and nothing else. The project includes one Rich Text slice, a homepage, and a dynamic page.
 
