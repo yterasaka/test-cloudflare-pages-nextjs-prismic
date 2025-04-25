@@ -1,5 +1,4 @@
 [build]
-  publish   = "out"                 # Next.js の静的出力先 (必要に応じて調整)
   functions = ".netlify/functions"  # ← ここを必ず .netlify/functions に
 
 [[plugins]]
